@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'application'
+	id 'org.springframework.boot' version '2.7.10'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.llsollu'
+version = '0'
+sourceCompatibility = '1.8'
+applicationName = 'ezsms'  // build.gradle에서 사용할 변수명
+archivesBaseName = 'ezsms'  // build/libs/에 생성되는 jar이름
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
+    implementation 'org.springframework.boot:spring-boot-starter'
+	compileOnly('com.h2database:h2')
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.projectlombok:lombok'
+	annotationProcessor('org.projectlombok:lombok')
+	testAnnotationProcessor('org.projectlombok:lombok')
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jar.doLast{
+  	copy {
+       from 'build/libs/' + applicationName + '-' + version + '.jar'
+       into applicationName + '/bin'
+    }
+        
+  	copy {
+       from 'build/libs/' + applicationName + '-' + version + '.jar'
+       into applicationName + '/bin'
+		rename (applicationName + '-' + version + '.jar', "ezsms.jar")
+    }
+}
+
+
+// tasks.named('test') {
+// 	useJUnitPlatform()
+// }

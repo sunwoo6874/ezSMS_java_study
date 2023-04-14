@@ -1,0 +1,34 @@
+ROAD MAP 
+
+A. 기능
+    1. STT
+        i. 배치
+        ii 실시간
+        iii. 녹취파일 curl
+
+    2. 모니터링 (magent)
+        i. 리소스
+        ii. 에러로그
+
+    3. 사용자 메뉴
+        i. ID/PW (추가 및 변경)
+        ii. admin 계정 생성
+
+A.1.i (배치)
+    화면 구성 요소
+        a. 리스트 조회
+            i. 내선번호,
+            ii. db_insert time
+        b. 녹취 플레이어
+        c. STT 결과 박스 (가능하면 시간값을 클릭하여 동적으로 플레이 하도록..)
+
+    DB컬럼 요소:
+        a. index
+        b. db insert time (a.k.a STT eTime)
+        c. extension
+        d. 녹취파일경로
+        e. STT결과
+    
+    추가 기술:
+        simulator와 연동 tcp,
+        magent 연동

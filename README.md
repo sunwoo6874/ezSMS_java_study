@@ -1,2 +1,7 @@
 # ezSMS
-STT Monitoring System
+
+# ezSttMonitoringSystem
+
+# Frontend : react
+
+# Backend : SpringBoot
