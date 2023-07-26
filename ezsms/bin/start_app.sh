@@ -1,11 +1,12 @@
 #!/bin/bash
 
-RUN_MODE="bg" # choose fg or bg
 ### RUN_MODE에 따른 logback 설정 ###
 # bg : <appender-ref ref="f"/> 로 설정.
 # fg : <appender-ref ref="c"/> 로 설정.
 # logback은 수정 후 적용하려면 그래들 빌드해야 한다..
 # vscode 에서 실행할땐 그래들 빌드 필요없음.
+
+RUN_MODE="fg" # choose fg or bg
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
