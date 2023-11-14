@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cnt=$(ps -ef | grep ezsms | grep -v grep | wc -l) 
+cnt=$(ps -ef | grep ezsms.jar | grep -v grep | wc -l) 
 if [ $cnt == "0" ]; then
    echo "ezsms already stopped." 
 elif [ $cnt -eq 1 ]; then

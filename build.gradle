@@ -29,6 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
     implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.reactivestreams:reactive-streams:1.0.3'
+
 	compileOnly('com.h2database:h2')
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.projectlombok:lombok'
