@@ -1,5 +1,6 @@
 package com.llsollu.ezsms.controller;
 
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -35,6 +36,10 @@ public class SttController {
                 "localhost");
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
+
+    
+
+
 
     private String getCurrentDateTime() {
         LocalDateTime now = LocalDateTime.now();

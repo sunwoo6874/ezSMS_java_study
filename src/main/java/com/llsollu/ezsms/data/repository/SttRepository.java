@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.llsollu.ezsms.data.entity.Stt;
 
-public interface SttRepository extends JpaRepository<Stt, String> {
+public interface SttRepository extends JpaRepository<Stt, Long> {
 
     /* 쿼리 메소드의 주제 키워드 */
 

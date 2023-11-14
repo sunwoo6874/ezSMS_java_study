@@ -1,5 +1,5 @@
 import DateRanger from "./components/dateRange.js";
-import UserInfo from "./components/UserInfo.js";
+import loginWindow from "./components/loginWindow.js";
 import Element from "./components/Element.js";
 import EffectState from "./components/UseEffectUseState.js";
 
@@ -12,7 +12,7 @@ function App() {
       <br></br>
       <br></br>
       유저 조회:
-      <UserInfo />
+      <loginWindow />
       <br></br>
       <div>
         createElement:

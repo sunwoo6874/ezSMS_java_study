@@ -19,12 +19,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User saveUser(User user) {
-        User user1 = userRepository.save(user);
-        return user1;
+        User myUser = userRepository.save(user);
+        return myUser;
     }
 
     public User getUser(Long id) {
-        User user1 = userRepository.findByIdIs(id);
-        return user1;
+        User myUser = userRepository.findByIdIs(id);
+        return myUser;
     }
 }

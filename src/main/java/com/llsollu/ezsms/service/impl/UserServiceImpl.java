@@ -36,11 +36,9 @@ public class UserServiceImpl implements UserService {
         Long idL = Long.parseLong(id);
         User user = userDao.getUser(idL);
         if (user == null) {
-            log.info("@@@@@@@@@@@@@NULL " + idL);
-
+            log.error("@@@@@@@@@@@@@ NULL:" + idL);
         } else {
-            log.info("NOT             @NULL " + idL);
-
+            log.info("@@@@@@@@@@@@@ NOT NULL:" + idL);
         }
         UserDto userDto = new UserDto(user.getId(), user.getName(), user.getUserId(), user.getPassword(),
                 user.getCreationDate());

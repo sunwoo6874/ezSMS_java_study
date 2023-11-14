@@ -40,6 +40,7 @@ public class UserController {
     // return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     // }
 
+    // test 용
     @GetMapping(value = "/select/{userId}")
     public String getUser(@PathVariable String userId) {
         UserDto responseDTO = userService.getUser(userId);
