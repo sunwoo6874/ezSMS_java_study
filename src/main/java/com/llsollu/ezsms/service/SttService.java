@@ -9,5 +9,6 @@ public interface SttService {
 
   SttDto saveSTT(Long id, String fileName, String etime, String sttResult, String wavURL);
 
-  String requestSTT(Long id, String ip, String port, String filePath, String pCode, String transID, String language);
+  String requestBatch(Long id, String ip, String port, String filePath, String pCode, String transID, String language,
+      String spkd, String align);
 }

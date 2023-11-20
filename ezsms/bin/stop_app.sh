@@ -1,5 +1,9 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR"
+
+
 cnt=$(ps -ef | grep ezsms.jar | grep -v grep | wc -l) 
 if [ $cnt == "0" ]; then
    echo "ezsms already stopped." 

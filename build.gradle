@@ -29,7 +29,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
     implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.reactivestreams:reactive-streams:1.0.3'
+	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'io.projectreactor:reactor-core'
+
+ 	implementation files('lib/eznlp-2.2.4.jar') 
 
 	compileOnly('com.h2database:h2')
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

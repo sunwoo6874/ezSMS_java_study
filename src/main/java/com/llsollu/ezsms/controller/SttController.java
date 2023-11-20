@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.llsollu.ezsms.data.dto.SttDto;
 import com.llsollu.ezsms.service.SttService;
-
+import com.llsollu.ezsms.common.utils.TextUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,44 +22,67 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class SttController {
 
-    private final SttService sttService;
+        private final SttService sttService;
 
-    public SttController(SttService sttService) {
-        this.sttService = sttService;
-    }
+        public SttController(SttService sttService) {
+                this.sttService = sttService;
+        }
 
-    @RequestMapping(value = "/batch", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<SttDto> insertBatch() {
-        SttDto responseDTO = sttService.saveSTT(10L, "recFileName", getCurrentDateTime(), "batch",
-                "localhost");
-        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
-    }
+        @RequestMapping(value = "/batch", method = { RequestMethod.GET, RequestMethod.POST })
+        public ResponseEntity<SttDto> insertBatch() {
+                SttDto responseDTO = sttService.saveSTT(10L, "recFileName", getCurrentDateTime(), "batch",
+                                "localhost");
+                return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+        }
 
-    @RequestMapping(value = "/real", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<SttDto> insertRealtime() {
-        SttDto responseDTO = sttService.saveSTT(632L, "recFileName", getCurrentDateTime(), "realtime",
-                "localhost");
-        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
-    }
+        @RequestMapping(value = "/real", method = { RequestMethod.GET, RequestMethod.POST })
+        public ResponseEntity<SttDto> insertRealtime() {
+                SttDto responseDTO = sttService.saveSTT(632L, "recFileName", getCurrentDateTime(), "realtime",
+                                "localhost");
+                return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+        }
 
-    @GetMapping("/requestBatch")
-    public ResponseEntity<String> requestASR(HttpServletRequest request) {
-        String filePath = request.getParameter("filepath");
-        String ipAddr = request.getParameter("ip");
-        String port = request.getParameter("port");
-        String productCode = request.getParameter("productcode");
-        String transactionID = request.getParameter("transactionid");
-        String language = request.getParameter("language");
-        Long dbID = System.currentTimeMillis();
+        @GetMapping("/requestBatch")
+        public ResponseEntity<String> requestASR(HttpServletRequest request) {
+                String filePath = (!TextUtil.isNullOrEmpty(request.getParameter("filepath")))
+                                ? request.getParameter("filepath")
+                                : "";
+                if (TextUtil.isNullOrEmpty(filePath)) { // 녹취 파일 경로 없으면 말짱꽝
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wav file path required");
+                }
 
-        String resBody = sttService.requestSTT(dbID, ipAddr, port, filePath, productCode, transactionID, language);
-        log.info("Received => " + resBody);
-        return ResponseEntity.status(HttpStatus.OK).body(resBody);
-    }
+                String ipAddr = (!TextUtil.isNullOrEmpty(request.getParameter("ip")))
+                                ? request.getParameter("ip")
+                                : "192.168.10.30";
+                String port = (!TextUtil.isNullOrEmpty(request.getParameter("port")))
+                                ? request.getParameter("port")
+                                : "7777";
+                String productCode = (!TextUtil.isNullOrEmpty(request.getParameter("productcode")))
+                                ? request.getParameter("productcode")
+                                : "PRODUCT_CODE";
+                String transactionID = (!TextUtil.isNullOrEmpty(request.getParameter("transactionid")))
+                                ? request.getParameter("transactionid")
+                                : "0";
+                String language = (!TextUtil.isNullOrEmpty(request.getParameter("language")))
+                                ? request.getParameter("language")
+                                : "kor";
+                String spkd = (!TextUtil.isNullOrEmpty(request.getParameter("spkd")))
+                                ? request.getParameter("spkd")
+                                : "no";
+                String align = (!TextUtil.isNullOrEmpty(request.getParameter("align")))
+                                ? request.getParameter("align")
+                                : "no";
+                Long dbID = System.currentTimeMillis();
 
-    private String getCurrentDateTime() {
-        LocalDateTime now = LocalDateTime.now();
-        String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return formattedDate;
-    }
+                String resBody = sttService.requestBatch(dbID, ipAddr, port, filePath, productCode, transactionID,
+                                language, spkd, align);
+                log.info("Received => " + resBody);
+                return ResponseEntity.status(HttpStatus.OK).body(resBody);
+        }
+
+        private String getCurrentDateTime() {
+                LocalDateTime now = LocalDateTime.now();
+                String formattedDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                return formattedDate;
+        }
 }
