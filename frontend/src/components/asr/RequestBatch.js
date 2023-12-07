@@ -16,7 +16,8 @@ function MultiInputComponent() {
         transactionID: '',
         language: '',
         spkd: '',
-        align: ''
+        align: '',
+        postProc: ''
     });
 
     // Function to handle input changes
@@ -78,6 +79,7 @@ function MultiInputComponent() {
             let lang = inputValues.language
             let spkd = inputValues.spkd
             let align = inputValues.align
+            let postProc = inputValues.postProc
 
             let uri = api + '/?ip=' + ipAddress + '&port=' + port + '&productcode=' + pCode + '&transactionid=' + transID + '&language=' + lang + '&spkd=' + spkd + '&align=' + align;
 
@@ -90,19 +92,15 @@ function MultiInputComponent() {
 
             axios.post(uri, formData, {
                 headers: {
+                    'Enable-Post-Process': postProc,
                     'Content-Type': 'multipart/form-data',
+
                 }
             }).then((response) => console.log('Audio file uploaded:', response.data))
                 .catch((error) => console.error('Error uploading audio file', error));
 
-            // axios.post(api, formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     }
-            // }).then((response) => console.log('Audio file uploaded:', response.data))
-            //     .catch((error) => console.error('Error uploading audio file', error));
         } else {
-            console.error('File is Null or not Selected');
+            console.error('File is null or not selected');
         }
     }
 
@@ -190,6 +188,16 @@ function MultiInputComponent() {
                     />
                 </label>
                 <br />
+                <label>
+                    Post Process(true/false, def:false):
+                    <input
+                        type="text"
+                        name="postProc"
+                        value={inputValues.postProc}
+                        onChange={handleInputChange}
+                    />
+                </label>
+                <br />
             </div>
             <div className="display-section">
                 <p>File Name: {inputValues.selectedFile ? inputValues.selectedFile.name : 'No file selected'}</p>
@@ -200,6 +208,7 @@ function MultiInputComponent() {
                 <p>Language: {inputValues.language}</p>
                 <p>Speaker Diarization: {inputValues.spkd}</p>
                 <p>Align: {inputValues.align}</p>
+                <p>Post Process: {inputValues.postProc}</p>
             </div>
             <div className='my-button'>
                 <button disabled={!ableToRequestASR} onClick={SendRequest} > REQUEST BATCH </button>

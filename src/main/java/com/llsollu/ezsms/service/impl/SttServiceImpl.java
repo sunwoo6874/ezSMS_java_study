@@ -20,7 +20,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.llsollu.eznlp.postproc.PostProcessor2;
-import com.llsollu.ezsms.common.utils.TextUtil;
 import com.llsollu.ezsms.data.dao.SttDao;
 import com.llsollu.ezsms.data.dto.SttDto;
 import com.llsollu.ezsms.data.entity.Stt;
@@ -56,7 +55,7 @@ public class SttServiceImpl implements SttService {
 
     @Override
     public String requestBatch(Long id, String ip, String port, String filePath, String pCode, String transID,
-            String language, String spkd, String align) {
+            String language, String spkd, String align, boolean enablePostProc) {
         // ASR Request 로직 구현.
 
         StringBuilder sb = new StringBuilder();
@@ -81,7 +80,6 @@ public class SttServiceImpl implements SttService {
             try {
                 MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
                 body.add("wav", new FileSystemResource(Paths.get(filePath)));
-                log.debug("####################### " + filePath);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -100,20 +98,16 @@ public class SttServiceImpl implements SttService {
             }
         });
 
-        cFuture.thenAcceptAsync(result -> {
-            if (TextUtil.isNullOrEmpty(result)) {
-                // if STT is empty, proceed another action
-            } else {
-                // if STT is not empty, post process STT.
-                // log.info("#################################### " + mPostProc.apply(result));
-            }
-        });
-
         try {
             // Wait for the CompletableFuture result without blocking the thread
-            return mPostProc.apply(cFuture.get(20, TimeUnit.SECONDS));
+            if (enablePostProc) {
+                return mPostProc.apply(cFuture.get(20, TimeUnit.SECONDS));
+            } else {
+                return cFuture.get(20, TimeUnit.SECONDS);
+            }
         } catch (Exception e) {
-            log.error("Error occurred while waiting for CompletableFuture: {}", e.getMessage());
+            log.error("Error occurred while waiting for CompletableFuture: {}",
+                    e.getMessage());
             return ""; // Return a default value or handle the error accordingly
         }
     }

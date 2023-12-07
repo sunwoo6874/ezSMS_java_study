@@ -50,7 +50,6 @@ public class SttController {
 
         @RequestMapping("/requestBatch")
         public ResponseEntity<String> requestASR(HttpServletRequest request) {
-
                 log.info("[Received] Content Length:" + request.getContentLength());
 
                 String filePath = "";
@@ -59,8 +58,12 @@ public class SttController {
                         Part filePart = request.getPart("audio");
                         InputStream fileContent = filePart.getInputStream();
 
-                        Path destination = Paths.get(
-                                        "/Users/sunwoobaek/work/self_learning/spring_boot/ezSMS/ezsms/test/temp.wav");
+                        StringBuilder tempFileSB = new StringBuilder();
+                        tempFileSB.append("/Users/sunwoobaek/work/self_learning/spring_boot/ezSMS/ezsms/test/");
+                        tempFileSB.append(Long.toString(System.currentTimeMillis()));
+                        tempFileSB.append(".wav");
+
+                        Path destination = Paths.get(tempFileSB.toString());
                         Files.copy(fileContent, destination);
 
                         tempUploadedFile = destination.toFile();
@@ -96,11 +99,15 @@ public class SttController {
                 String align = (!TextUtil.isNullOrEmpty(request.getParameter("align")))
                                 ? request.getParameter("align")
                                 : "no";
+                boolean enablePP = (!TextUtil.isNullOrEmpty(request.getHeader("Enable-Post-Process")))
+                                ? Boolean.parseBoolean(request.getHeader("Enable-Post-Process"))
+                                : false;
+
                 Long dbID = System.currentTimeMillis();
 
                 String resBody = sttService.requestBatch(dbID, ipAddr, port, filePath, productCode,
-                                transactionID, language, spkd, align);
-                log.info("Received => " + resBody);
+                                transactionID, language, spkd, align, enablePP);
+                log.info("[RECEIVED] STT: " + resBody);
 
                 if (tempUploadedFile.exists()) {
                         tempUploadedFile.delete();
