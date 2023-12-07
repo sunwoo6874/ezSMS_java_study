@@ -1,21 +1,12 @@
 package com.llsollu.ezsms.service.impl;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.hibernate.query.criteria.internal.predicate.CompoundPredicate;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Io;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,24 +14,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
+import com.llsollu.eznlp.postproc.PostProcessor2;
 import com.llsollu.ezsms.common.utils.TextUtil;
 import com.llsollu.ezsms.data.dao.SttDao;
 import com.llsollu.ezsms.data.dto.SttDto;
 import com.llsollu.ezsms.data.entity.Stt;
 import com.llsollu.ezsms.service.SttService;
-import com.llsollu.eznlp.postproc.PostProcessor2;
 
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -95,6 +81,7 @@ public class SttServiceImpl implements SttService {
             try {
                 MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
                 body.add("wav", new FileSystemResource(Paths.get(filePath)));
+                log.debug("####################### " + filePath);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -123,7 +110,6 @@ public class SttServiceImpl implements SttService {
         });
 
         try {
-            log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             // Wait for the CompletableFuture result without blocking the thread
             return mPostProc.apply(cFuture.get(20, TimeUnit.SECONDS));
         } catch (Exception e) {
@@ -149,5 +135,3 @@ public class SttServiceImpl implements SttService {
         return clientHttpRequestFactory;
     }
 }
-
-

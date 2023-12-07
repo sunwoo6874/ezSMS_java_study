@@ -1,20 +1,26 @@
 package com.llsollu.ezsms.controller;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.llsollu.ezsms.common.utils.TextUtil;
 import com.llsollu.ezsms.data.dto.SttDto;
 import com.llsollu.ezsms.service.SttService;
-import com.llsollu.ezsms.common.utils.TextUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -42,11 +48,29 @@ public class SttController {
                 return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
         }
 
-        @GetMapping("/requestBatch")
+        @RequestMapping("/requestBatch")
         public ResponseEntity<String> requestASR(HttpServletRequest request) {
-                String filePath = (!TextUtil.isNullOrEmpty(request.getParameter("filepath")))
-                                ? request.getParameter("filepath")
-                                : "";
+
+                log.info("[Received] Content Length:" + request.getContentLength());
+
+                String filePath = "";
+                File tempUploadedFile = null;
+                try {
+                        Part filePart = request.getPart("audio");
+                        InputStream fileContent = filePart.getInputStream();
+
+                        Path destination = Paths.get(
+                                        "/Users/sunwoobaek/work/self_learning/spring_boot/ezSMS/ezsms/test/temp.wav");
+                        Files.copy(fileContent, destination);
+
+                        tempUploadedFile = destination.toFile();
+                        filePath = tempUploadedFile.getAbsolutePath();
+
+                } catch (Exception e) {
+                        log.error("[Exception] Reason:" + e);
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("");
+                }
+
                 if (TextUtil.isNullOrEmpty(filePath)) { // 녹취 파일 경로 없으면 말짱꽝
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("wav file path required");
                 }
@@ -74,9 +98,13 @@ public class SttController {
                                 : "no";
                 Long dbID = System.currentTimeMillis();
 
-                String resBody = sttService.requestBatch(dbID, ipAddr, port, filePath, productCode, transactionID,
-                                language, spkd, align);
+                String resBody = sttService.requestBatch(dbID, ipAddr, port, filePath, productCode,
+                                transactionID, language, spkd, align);
                 log.info("Received => " + resBody);
+
+                if (tempUploadedFile.exists()) {
+                        tempUploadedFile.delete();
+                }
                 return ResponseEntity.status(HttpStatus.OK).body(resBody);
         }
 

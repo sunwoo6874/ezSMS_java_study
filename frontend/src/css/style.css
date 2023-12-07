@@ -1,0 +1,23 @@
+/* Style for the button */
+.my-button {
+    padding: 10px 10px;
+    font-size: 16px;
+    border: 1.5px solid #121212;
+    /* Border color */
+    border-radius: 15px;
+    /* Rounded corners */
+    background-color: rgb(38, 139, 110);
+    /* Background color */
+    color: rgb(209, 54, 54);
+    /* Text color */
+    cursor: pointer;
+    /* Cursor style on hover */
+
+    /* Positioning */
+    position: absolute;
+    bottom: 10px;
+    /* Adjust this value to set the distance from the bottom */
+    left: 75%;
+    /* Center horizontally */
+    transform: translateX(-50%);
+}
