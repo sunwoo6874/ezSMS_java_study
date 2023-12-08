@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 1px;
   margin: 20px;
 }
 
@@ -11,22 +11,21 @@
   flex: 1;
   padding: 8px;
   font-size: 1px;
-  /* Adjust the padding to control the space */
 }
 
 .input-section label,
 .display-section p {
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   display: block;
-  font-size: 14px;
-  width: calc(100% - 20px);
+  font-size: 13.5px;
+  width: calc(100% - 40px);
 }
 
 .input-section input,
 .display-section p {
-  width: calc(100% - 20px);
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  width: calc(100% - 10px);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1.3px solid #602626;
   font-size: 14px;
 }

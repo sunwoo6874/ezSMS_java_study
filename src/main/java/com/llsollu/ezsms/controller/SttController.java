@@ -58,8 +58,16 @@ public class SttController {
                         Part filePart = request.getPart("audio");
                         InputStream fileContent = filePart.getInputStream();
 
+                        String rootDir = "/Users/sunwoobaek/work/self_learning/spring_boot/ezSMS/ezsms/tempUploader/";
+                        File tempDir = new File(rootDir);
+
+                        if (tempDir.exists() || !tempDir.isDirectory()) {
+                                log.warn(tempDir + " does not exist, created just now.");
+                                tempDir.mkdir();
+                        }
+
                         StringBuilder tempFileSB = new StringBuilder();
-                        tempFileSB.append("/Users/sunwoobaek/work/self_learning/spring_boot/ezSMS/ezsms/test/");
+                        tempFileSB.append(rootDir);
                         tempFileSB.append(Long.toString(System.currentTimeMillis()));
                         tempFileSB.append(".wav");
 

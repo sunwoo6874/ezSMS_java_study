@@ -96,7 +96,7 @@ function MultiInputComponent() {
                     'Content-Type': 'multipart/form-data',
 
                 }
-            }).then((response) => console.log('Audio file uploaded:', response.data))
+            }).then((response) => console.log('STT result:', response.data))
                 .catch((error) => console.error('Error uploading audio file', error));
 
         } else {
