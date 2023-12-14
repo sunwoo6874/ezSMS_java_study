@@ -4,4 +4,4 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 
-tail -f ../logs/ezsms.log
+tail -n50 -f ../logs/ezsms.log

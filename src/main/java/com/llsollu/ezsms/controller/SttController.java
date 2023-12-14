@@ -61,8 +61,8 @@ public class SttController {
                         String rootDir = "/Users/sunwoobaek/work/self_learning/spring_boot/ezSMS/ezsms/tempUploader/";
                         File tempDir = new File(rootDir);
 
-                        if (tempDir.exists() || !tempDir.isDirectory()) {
-                                log.warn(tempDir + " does not exist, created just now.");
+                        if (!tempDir.exists() || !tempDir.isDirectory()) {
+                                log.warn(tempDir + " does not exist, created just now and will be automatically deleted.");
                                 tempDir.mkdir();
                         }
 
@@ -88,7 +88,7 @@ public class SttController {
 
                 String ipAddr = (!TextUtil.isNullOrEmpty(request.getParameter("ip")))
                                 ? request.getParameter("ip")
-                                : "192.168.10.30";
+                                : "211.236.232.199";
                 String port = (!TextUtil.isNullOrEmpty(request.getParameter("port")))
                                 ? request.getParameter("port")
                                 : "7777";

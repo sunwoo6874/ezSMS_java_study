@@ -1,15 +1,16 @@
 import DateRanger from "./components/dateRange.js";
 // import loginWindow from "./components/loginWindow.js";
-import Element from "./components/Element.js";
-import EffectState from "./components/UseEffectUseState.js";
 import UserInfo from "./components/GetUserInfoTest.js";
 import RequestBatch from "./components/asr/RequestBatch.js";
-
+import UserProfile from "./components/UserProfile.js";
 function App() {
   return (
     <div>
       <img src={"images/llsollu.jpg"} alt='llsollu logo' className='logo' />
       <h1 className='header'> ezSMS (Demo)</h1> <br></br>
+      <br></br>
+      <br></br>
+      <UserProfile name="Baek" initialAge={30} />
       <br></br>
       <br></br>
       유저 조회:

@@ -119,7 +119,7 @@ function MultiInputComponent() {
                 </label>
                 <br />
                 <label>
-                    Server IP(def:192.168.10.30):
+                    Server IP(def:211.236.232.199):
                     <input
                         type="text"
                         name="serverIp"
