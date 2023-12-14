@@ -63,6 +63,9 @@ public class SttController {
 
                         if (!tempDir.exists() || !tempDir.isDirectory()) {
                                 log.warn(tempDir + " does not exist, created just now and will be automatically deleted.");
+                                if (tempDir.exists() && !tempDir.isDirectory()) {
+                                        tempDir.delete();
+                                }
                                 tempDir.mkdir();
                         }
 
